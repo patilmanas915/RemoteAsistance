@@ -1261,8 +1261,8 @@ function LiveKitScreenShare({
   annotationSocketRef: React.MutableRefObject<WebSocket | null>;
   annotationRoomCode: string;
 }) {
-  const _room = useRoomContext();
-  const _participants = useParticipants();
+  const room = useRoomContext();
+  const participants = useParticipants();
   const fullscreenContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -1275,6 +1275,8 @@ function LiveKitScreenShare({
   // Annotation WebSocket connection - matching your original logic
   useEffect(() => {
     if (!annotationRoomCode) return;
+    if(room.state !== 'connected') {}
+    if(participants.length === 0) {};
 
     const annotationWs = new WebSocket(getWebSocketUrl().annotationUrl);
     annotationSocketRef.current = annotationWs;
