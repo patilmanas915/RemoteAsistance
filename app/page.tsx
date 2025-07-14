@@ -931,15 +931,23 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
 
     // Listen for audio device changes from AudioDeviceSelector
     const handleAudioDeviceChange = async (event: Event) => {
-      try {
-        // Cast to CustomEvent and check for detail
+      // Only handle CustomEvent with the expected detail
+      if (
+        'detail' in event &&
+        typeof (event as CustomEvent).detail === 'object' &&
+        (event as CustomEvent).detail !== null &&
+        'type' in (event as CustomEvent).detail &&
+        'deviceId' in (event as CustomEvent).detail
+      ) {
         const customEvent = event as CustomEvent<{ type: string; deviceId: string }>;
-        if (customEvent.detail?.type === 'microphone') {
-          await room.switchActiveDevice('audioinput', customEvent.detail.deviceId);
-          console.log('Switched to microphone:', customEvent.detail.deviceId);
+        if (customEvent.detail.type === 'microphone') {
+          try {
+            await room.switchActiveDevice('audioinput', customEvent.detail.deviceId);
+            console.log('Switched to microphone:', customEvent.detail.deviceId);
+          } catch (err) {
+            console.error('Error switching audio device:', err);
+          }
         }
-      } catch (err) {
-        console.error('Error switching audio device:', err);
       }
     };
 
