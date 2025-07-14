@@ -16,11 +16,7 @@ export async function GET(request: NextRequest) {
 
     const sessionDir = join(process.cwd(), 'public', 'uploads', sessionCode);
     
-    const files: any = {
-      pdf: [],
-      image: [],
-      video: []
-    };
+    const files: Record<string, { filename: string; url: string; size: number; uploadTime: Date; isFile: boolean }[]> = {};
 
     // Check each file type directory
     for (const fileType of ['pdf', 'image', 'video']) {

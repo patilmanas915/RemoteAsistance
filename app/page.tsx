@@ -374,8 +374,7 @@ function AnnotationController({
       formData.append('file', file);
       formData.append('upload_preset', UPLOAD_PRESET);
      const resourceType = uploadType === 'pdf' ? 'raw' : uploadType;
-      let folder = `justvr/${roomCode}/` + (uploadType === 'image' ? 'images' : uploadType === 'video' ? 'videos' : 'pdfs');
-      formData.append('folder', folder);
+      const folder = `justvr/${roomCode}/` + (uploadType === 'image' ? 'images' : uploadType === 'video' ? 'videos' : 'pdfs');formData.append('folder', folder);
       formData.append('tags', `room_${roomCode},${uploadType},justvr`);
       const cloudinaryURL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`;
       const response = await fetch(cloudinaryURL, { method: 'POST', body: formData });
@@ -401,8 +400,8 @@ function AnnotationController({
       }
       // Display success UI
       setUploadResult(`${uploadType === 'image' ? '🖼️ Image' : uploadType === 'video' ? '🎞️ Video' : '📄 PDF'} uploaded successfully!`);
-    } catch (err: any) {
-      setUploadResult(`❌ Upload failed: ${err.message || 'Unknown error'}`);
+    } catch (err: unknown) {
+      setUploadResult(`❌ Upload failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setIsUploading(false);
       form.reset();
@@ -915,7 +914,7 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
           await room.switchActiveDevice('audioinput', preferredMic);
           console.log('Applied preferred microphone:', preferredMic);
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error('Error applying audio device preferences:', err);
       }
     };
@@ -1073,7 +1072,7 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
             socket={annotationSocketRef.current}
             annotationState={annotationState}
             setAnnotationState={setAnnotationState}
-          
+        
           />
         </div>
         
@@ -1232,7 +1231,7 @@ function MobileOptimizedParticipants({ participants }: { participants: Participa
 let pos = { x: 0, y: 0, z: 0 };
 let scale = { x: 1, y: 1, z: 1 };
 let rot = { x: 0, y: 0, z: 0 };
-let keys: { [key: string]: boolean } = {};
+const keys: { [key: string]: boolean } = {};
 let annotations: { [key: string]: any } = {};
 let editing: string | null = null;
 let lastEditing: string | null = null;
