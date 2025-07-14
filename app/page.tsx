@@ -1261,8 +1261,8 @@ function LiveKitScreenShare({
   annotationSocketRef: React.MutableRefObject<WebSocket | null>;
   annotationRoomCode: string;
 }) {
-  const room = useRoomContext();
-  const participants = useParticipants();
+  const _room = useRoomContext();
+  const _participants = useParticipants();
   const fullscreenContainerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
