@@ -89,7 +89,7 @@ const AudioDeviceSelector: React.FC = () => {
     audioElements.forEach(audio => {
       if ('setSinkId' in audio) {
         // TypeScript doesn't recognize setSinkId by default
-        (audio as any).setSinkId(deviceId).catch((err: any) => {
+        (audio as HTMLAudioElement).setSinkId(deviceId).catch((err: Error) => {
           console.error('Error setting audio output device:', err);
         });
       }
