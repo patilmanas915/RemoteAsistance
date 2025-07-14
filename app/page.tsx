@@ -919,18 +919,18 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
         console.error('Error applying audio device preferences:', err);
       }
     };
-    
+
     if (room.state === 'connected') {
       applyAudioPreferences();
     }
-    
+
     // Listen for room connection to apply preferences
     const handleConnected = () => {
       applyAudioPreferences();
     };
-    
+
     // Listen for audio device changes from AudioDeviceSelector
-   const handleAudioDeviceChange = async (event: Event) => {
+    const handleAudioDeviceChange = async (event: Event) => {
       try {
         // Cast to CustomEvent and check for detail
         const customEvent = event as CustomEvent<{ type: string; deviceId: string }>;
@@ -942,10 +942,10 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
         console.error('Error switching audio device:', err);
       }
     };
-    
+
     room.on(RoomEvent.Connected, handleConnected);
     window.addEventListener('audio-device-change', handleAudioDeviceChange);
-    
+
     return () => {
       room.off(RoomEvent.Connected, handleConnected);
       window.removeEventListener('audio-device-change', handleAudioDeviceChange);
