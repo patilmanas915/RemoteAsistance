@@ -885,8 +885,8 @@ export default function JoinPage() {
 }
 
 function RoomContent({ identity, sessionCode }: { identity: string, sessionCode: string }) {
-  const participants = useParticipants();
-  const room = useRoomContext();
+  const participants = useParticipants(); // used in JSX below
+  const room = useRoomContext(); // used in useEffect and audio logic
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   
