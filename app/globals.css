@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lk-va-bar-width: 72px;
+  --lk-control-bar-height: unset;
+  --tata-purple: #2F0B33;
+  --tata-purple-dark: #1E071F;
+  --tata-purple-lighter: #3F1C42;
+  --tata-cyan: #75E0E4;
+  --tata-white: #FFFFFF;
+}
+
+/* Animation for device selector dropdown */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Add Tata theme styles */
+body {
+  @apply bg-tata-purple text-tata-white;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Tata components */
+.tata-card {
+  @apply bg-tata-purple-lighter rounded-xl shadow-lg;
+  border: 1px solid rgba(117, 224, 228, 0.15);
+}
+
+.tata-card-header {
+  @apply border-b border-white border-opacity-10 p-4;
+  background-color: rgba(117, 224, 228, 0.05);
+}
+
+.tata-icon {
+  @apply text-tata-cyan;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* LiveKit styles */
+.agent-visualizer > .lk-audio-bar {
+  width: 72px;
+}
+
+.lk-agent-control-bar {
+  @apply border-t-0 p-0 h-min mr-4;
+}
+
+.lk-disconnect-button {
+  @apply h-[36px] hover:bg-[#6b221a] hover:text-[white] bg-[#31100c] border-[#6b221a];
+}

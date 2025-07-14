@@ -1,0 +1,54 @@
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import { useSearchParams, useRouter } from 'next/navigation';
+// import TataLanding from '@/components/TataLanding';
+
+// export default function LandingPage() {
+//   const searchParams = useSearchParams();
+//   const router = useRouter();
+//   const [userName, setUserName] = useState<string>('');
+//   const [id, setId] = useState<string>('');
+
+//   useEffect(() => {
+//     const userNameParam = searchParams.get('userName');
+//     const idParam = searchParams.get('id');
+    
+//     if (userNameParam) {
+//       setUserName(userNameParam);
+//     }
+    
+//     if (idParam) {
+//       setId(idParam);
+//     }
+//   }, [searchParams]);
+
+//   const handleEnterClick = () => {
+//     // Open Tata Techverse in a new tab
+//     window.open(`https://runtimetheory.com/?id=${id}`, '_blank');
+//   };
+
+//   const handleUploadClick = () => {
+//     // Navigate to the main page with the user information
+//     router.push(`/?id=${id}&userName=${userName}`);
+//   };
+
+//   if (!userName || !id) {
+//     return (
+//       <div className="min-h-screen bg-tata-purple text-white flex items-center justify-center">
+//         <div className="text-center">
+//           <h1 className="text-2xl font-bold mb-4">Missing Parameters</h1>
+//           <p>Please provide both userName and id parameters.</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <TataLanding 
+//       userName={userName}
+//       onEnterClick={handleEnterClick}
+//       onUploadClick={handleUploadClick}
+//     />
+//   );
+// } 
