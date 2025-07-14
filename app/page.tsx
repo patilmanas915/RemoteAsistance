@@ -903,6 +903,7 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
       scale: { x: 1, y: 1, z: 1 }
     }
   });
+
   
   // Handle audio device changes
   useEffect(() => {
