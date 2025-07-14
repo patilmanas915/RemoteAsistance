@@ -103,35 +103,33 @@ function generateAnnotationId(): string {
 }
 
 // Generate room code - matching your original function
-function generateCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-}
+// function generateCode(): string {
+//   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+//   return Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+// }
 
 // Annotation Controller Component - matches your original HTML interface
 function AnnotationController({ 
   roomCode, 
   socket, 
   annotationState, 
-  setAnnotationState,
-  onUpload 
+  setAnnotationState
 }: {
   roomCode: string;
   socket: WebSocket | null;
   annotationState: AnnotationControllerState;
   setAnnotationState: React.Dispatch<React.SetStateAction<AnnotationControllerState>>;
-  onUpload: (formData: FormData) => void;
 }) {
   const [uploadType, setUploadType] = useState('pdf');
   const [uploadResult, setUploadResult] = useState('');
   const [isUploading, setIsUploading] = useState(false); // Add loading state
 
   // Send message through WebSocket
-  const send = (msg: any) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify(msg));
-    }
-  };
+  const send = (msg: unknown) => {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify(msg));
+  }
+};
 
   // Set edit mode - using global variable
   const setMode = (mode: 'position' | 'rotation' | 'scale') => {
@@ -375,7 +373,7 @@ function AnnotationController({
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', UPLOAD_PRESET);
-      let resourceType = uploadType === 'pdf' ? 'raw' : uploadType;
+     const resourceType = uploadType === 'pdf' ? 'raw' : uploadType;
       let folder = `justvr/${roomCode}/` + (uploadType === 'image' ? 'images' : uploadType === 'video' ? 'videos' : 'pdfs');
       formData.append('folder', folder);
       formData.append('tags', `room_${roomCode},${uploadType},justvr`);
@@ -1075,7 +1073,7 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
             socket={annotationSocketRef.current}
             annotationState={annotationState}
             setAnnotationState={setAnnotationState}
-            onUpload={() => {}}
+          
           />
         </div>
         
