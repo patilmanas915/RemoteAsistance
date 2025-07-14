@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { LocalAudioTrack } from 'livekit-client';
 import {
   LiveKitRoom,
   useParticipants,
@@ -274,8 +275,8 @@ function AnnotationController({
     
     // Update global variables
     editing = id;
-    lastEditing = id;
-    annotations[id] = { pos: { ...pos }, rot: { ...rot }, scale: { ...scale }, type };
+    // lastEditing removed
+    annotations[id] = { id, pos: { ...pos }, rot: { ...rot }, scale: { ...scale }, type };
     
     const msg = {
       command: 'create',
@@ -307,7 +308,7 @@ function AnnotationController({
     if (ann) {
       // Update global variables to match the annotation
       editing = id;
-      lastEditing = id;
+      // lastEditing removed
       pos = { ...ann.pos };
       rot = { ...ann.rot };
       scale = { ...ann.scale };
@@ -316,9 +317,8 @@ function AnnotationController({
         rot: { ...ann.rot },
         scale: { ...ann.scale }
       };
-      
       // Also store in global annotations object
-      annotations[id] = { pos: { ...ann.pos }, rot: { ...ann.rot }, scale: { ...ann.scale }, type: ann.type };
+      annotations[id] = { id, pos: { ...ann.pos }, rot: { ...ann.rot }, scale: { ...ann.scale }, type: ann.type };
       
       setAnnotationState(prev => ({
         ...prev,
@@ -929,7 +929,7 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
     };
     
     // Listen for audio device changes from AudioDeviceSelector
-    const handleAudioDeviceChange = async (event: Event) => {
+   const handleAudioDeviceChange = async (event: Event) => {
       try {
         // Cast to CustomEvent and check for detail
         const customEvent = event as CustomEvent<{ type: string; deviceId: string }>;
@@ -965,8 +965,8 @@ function RoomContent({ identity, sessionCode }: { identity: string, sessionCode:
   // --- Audio Source Switch Logic ---
   const [audioSource, setAudioSource] = useState<'mic' | 'tab'>('mic');
   const [isSharingTabAudio, setIsSharingTabAudio] = useState(false);
-  const tabAudioTrackRef = useRef<any>(null);
-  const micTrackRef = useRef<any>(null);
+  const tabAudioTrackRef = useRef<LocalAudioTrack | null>(null);
+  const micTrackRef = useRef<LocalAudioTrack | null>(null);
 
   // When switching to mic, unpublish tab audio and re-enable mic
   useEffect(() => {
@@ -1228,22 +1228,22 @@ function MobileOptimizedParticipants({ participants }: { participants: Participa
 }
 
 // Global variables for annotation editing - matching main.js exactly
-let pos = { x: 0, y: 0, z: 0 };
-let scale = { x: 1, y: 1, z: 1 };
-let rot = { x: 0, y: 0, z: 0 };
+let pos: Position = { x: 0, y: 0, z: 0 };
+let scale: Scale = { x: 1, y: 1, z: 1 };
+let rot: Rotation = { x: 0, y: 0, z: 0 };
 const keys: { [key: string]: boolean } = {};
-let annotations: { [key: string]: any } = {};
+const annotations: Record<string, Annotation> = {};
 let editing: string | null = null;
-let lastEditing: string | null = null;
-let editMode = "position";
+let editMode: 'position' | 'rotation' | 'scale' = 'position';
 let sensitivity = 0.05;
 
 // Track last sent values for delta calculation
-let lastSent = {
+let lastSent: { pos: Position; rot: Rotation; scale: Scale } = {
   pos: { x: 0, y: 0, z: 0 },
   rot: { x: 0, y: 0, z: 0 },
   scale: { x: 1, y: 1, z: 1 }
 };
+// Removed unused variable lastEditing
 
 function LiveKitScreenShare({ 
   sessionCode, 
